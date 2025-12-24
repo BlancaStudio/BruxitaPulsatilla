@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuestionario: Exploración Emocional - Pulsatilla Nigricans</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #8b7355;
+            padding-bottom: 20px;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #7f8c8d;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .question-number {
+            display: inline-block;
+            background: #8b7355;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 14px;
+        }
+
+        .question-text {
+            color: #2c3e50;
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .question-text span {
+            flex: 1;
+        }
+
+        .options {
+            display: flex;
+            gap: 15px;
+            margin-left: 42px;
+            flex-wrap: wrap;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .option input[type="radio"] {
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+            accent-color: #8b7355;
+        }
+
+        .option label {
+            cursor: pointer;
+            color: #34495e;
+            font-size: 14px;
+            user-select: none;
+        }
+
+        .option input[type="radio"]:hover + label {
+            color: #8b7355;
+            font-weight: 500;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+            justify-content: center;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit {
+            background: #8b7355;
+            color: white;
+            flex: 1;
+            max-width: 200px;
+        }
+
+        .btn-submit:hover {
+            background: #6d5844;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 115, 85, 0.3);
+        }
+
+        .btn-reset {
+            background: #ecf0f1;
+            color: #34495e;
+            flex: 1;
+            max-width: 200px;
+        }
+
+        .btn-reset:hover {
+            background: #d5dbdb;
+        }
+
+        .result {
+            display: none;
+            margin-top: 40px;
+            padding: 20px;
+            background: #f0f4f8;
+            border-left: 5px solid #8b7355;
+            border-radius: 6px;
+        }
+
+        .result.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .result p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .score-display {
+            font-size: 28px;
+            font-weight: bold;
+            color: #8b7355;
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        .donate-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #d5dbdb;
+            text-align: center;
+        }
+
+        .donate-section p {
+            color: #7f8c8d;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .btn-donate {
+            background: #27ae60;
+            color: white;
+            padding: 10px 20px;
+            display: inline-block;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-donate:hover {
+            background: #229954;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #ecf0f1;
+            border-radius: 2px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #8b7355;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .options {
+                flex-direction: column;
+                margin-left: 42px;
+            }
+
+            .option {
+                min-width: auto;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn-submit,
+            .btn-reset {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+            <div class="header">
+            <h1>🌿 Exploración Emocional</h1>
+            <p><strong>Pulsatilla Nigricans y Arraigo</strong></p>
+            <p style="margin-top: 10px; font-size: 13px;">Este cuestionario es una herramienta de autoexploración basada en el perfil sintomático del remedio homeopático Pulsatilla nigricans. No sustituye una consulta médica profesional.</p>
+            <p style="margin-top: 8px; font-size: 11px; color: #95a5a6;"><em>Basado en el estudio de caso único de la Dra. Brenda Judith Muñoz Valeriano. Diseño y desarrollo: Manus AI.</em></p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <form id="questionnaireForm">
+            <!-- Pregunta 1 -->
+            <div class="form-group">
+                <div class="question-text">
+                    <span class="question-number">1</span>
+                    <span>¿Siente con frecuencia un profundo sentimiento de abandono o soledad afectiva, incluso cuando está acompañado/a?</span>
+                </div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" id="q1_si" name="q1" value="Si" required>
+                        <label for="q1_si">Sí</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q1_aveces" name="q1" value="A veces">
+                        <label for="q1_aveces">A veces</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q1_no" name="q1" value="No">
+                        <label for="q1_no">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pregunta 2 -->
+            <div class="form-group">
+                <div class="question-text">
+                    <span class="question-number">2</span>
+                    <span>¿Tiende a buscar constantemente el afecto, las caricias, los abrazos o los mimos de los demás?</span>
+                </div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" id="q2_si" name="q2" value="Si" required>
+                        <label for="q2_si">Sí</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q2_aveces" name="q2" value="A veces">
+                        <label for="q2_aveces">A veces</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q2_no" name="q2" value="No">
+                        <label for="q2_no">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pregunta 3 -->
+            <div class="form-group">
+                <div class="question-text">
+                    <span class="question-number">3</span>
+                    <span>¿Llora con facilidad o se entristece por cosas que a otros les parecen insignificantes?</span>
+                </div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" id="q3_si" name="q3" value="Si" required>
+                        <label for="q3_si">Sí</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q3_aveces" name="q3" value="A veces">
+                        <label for="q3_aveces">A veces</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q3_no" name="q3" value="No">
+                        <label for="q3_no">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pregunta 4 -->
+            <div class="form-group">
+                <div class="question-text">
+                    <span class="question-number">4</span>
+                    <span>Cuando está triste o llora, ¿siente que sus síntomas mejoran notablemente si alguien le consuela o le abraza?</span>
+                </div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" id="q4_si" name="q4" value="Si" required>
+                        <label for="q4_si">Sí</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q4_aveces" name="q4" value="A veces">
+                        <label for="q4_aveces">A veces</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q4_no" name="q4" value="No">
+                        <label for="q4_no">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pregunta 5 -->
+            <div class="form-group">
+                <div class="question-text">
+                    <span class="question-number">5</span>
+                    <span>¿Sus estados de ánimo y síntomas emocionales cambian con frecuencia y de forma impredecible?</span>
+                </div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" id="q5_si" name="q5" value="Si" required>
+                        <label for="q5_si">Sí</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q5_aveces" name="q5" value="A veces">
+                        <label for="q5_aveces">A veces</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q5_no" name="q5" value="No">
+                        <label for="q5_no">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pregunta 6 -->
+            <div class="form-group">
+                <div class="question-text">
+                    <span class="question-number">6</span>
+                    <span>¿Siente que depende mucho del amor o la aprobación de una persona en particular para sentirse bien?</span>
+                </div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" id="q6_si" name="q6" value="Si" required>
+                        <label for="q6_si">Sí</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q6_aveces" name="q6" value="A veces">
+                        <label for="q6_aveces">A veces</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q6_no" name="q6" value="No">
+                        <label for="q6_no">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pregunta 7 -->
+            <div class="form-group">
+                <div class="question-text">
+                    <span class="question-number">7</span>
+                    <span>¿Ha aceptado situaciones o condiciones que no le gustan en una relación por miedo a ser abandonado/a?</span>
+                </div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" id="q7_si" name="q7" value="Si" required>
+                        <label for="q7_si">Sí</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q7_aveces" name="q7" value="A veces">
+                        <label for="q7_aveces">A veces</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q7_no" name="q7" value="No">
+                        <label for="q7_no">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pregunta 8 -->
+            <div class="form-group">
+                <div class="question-text">
+                    <span class="question-number">8</span>
+                    <span>¿Se describe a sí mismo/a como una persona tímida, vergonzosa o con falta de confianza en sí misma?</span>
+                </div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" id="q8_si" name="q8" value="Si" required>
+                        <label for="q8_si">Sí</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q8_aveces" name="q8" value="A veces">
+                        <label for="q8_aveces">A veces</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q8_no" name="q8" value="No">
+                        <label for="q8_no">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pregunta 9 -->
+            <div class="form-group">
+                <div class="question-text">
+                    <span class="question-number">9</span>
+                    <span>¿Suele tener problemas digestivos (como colon irritable) o insomnio relacionados con su estado emocional?</span>
+                </div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" id="q9_si" name="q9" value="Si" required>
+                        <label for="q9_si">Sí</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q9_aveces" name="q9" value="A veces">
+                        <label for="q9_aveces">A veces</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q9_no" name="q9" value="No">
+                        <label for="q9_no">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pregunta 10 -->
+            <div class="form-group">
+                <div class="question-text">
+                    <span class="question-number">10</span>
+                    <span>¿Siente que le cuesta trabajo "poner los pies en la tierra" o conectar con las sensaciones de su cuerpo?</span>
+                </div>
+                <div class="options">
+                    <div class="option">
+                        <input type="radio" id="q10_si" name="q10" value="Si" required>
+                        <label for="q10_si">Sí</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q10_aveces" name="q10" value="A veces">
+                        <label for="q10_aveces">A veces</label>
+                    </div>
+                    <div class="option">
+                        <input type="radio" id="q10_no" name="q10" value="No">
+                        <label for="q10_no">No</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botones -->
+            <div class="button-group">
+                <button type="submit" class="btn-submit">Ver Resultado</button>
+                <button type="reset" class="btn-reset">Limpiar</button>
+            </div>
+        </form>
+
+        <!-- Resultado -->
+        <div class="result" id="result">
+            <h3>Tu Resultado</h3>
+            <div class="score-display" id="scoreDisplay">0 / 20</div>
+            <p id="resultText"></p>
+            <div class="donate-section">
+                <p>¿Te resultó útil este cuestionario?</p>
+                <p style="font-size: 12px; color: #95a5a6; margin-top: 8px;">Si deseas profundizar en tu exploración personal o tienes preguntas, te invito a que me contactes o me invites a un café virtual.</p>
+                <div style="display: flex; gap: 10px; justify-content: center; margin-top: 12px; flex-wrap: wrap;">
+                    <a href="https://www.buymeacoffee.com/aidatavansg" target="_blank" class="btn-donate" style="background: #FFDD00; color: #000; border: none;">☕ Invítame a un Café</a>
+                    <a href="https://wa.me/34643831241?text=Hola%2C%20me%20gustaría%20conocer%20más%20sobre%20los%20cuestionarios%20y%20la%20exploración%20personal." target="_blank" class="btn-donate" style="background: #25d366;">💬 Contactarme por WhatsApp</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('questionnaireForm');
+        const resultDiv = document.getElementById('result');
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        const resultText = document.getElementById('resultText');
+        const progressFill = document.getElementById('progressFill');
+
+        // Actualizar barra de progreso
+        form.addEventListener('change', function() {
+            const totalQuestions = 10;
+            const answeredQuestions = document.querySelectorAll('input[type="radio"]:checked').length;
+            const progress = (answeredQuestions / totalQuestions) * 100;
+            progressFill.style.width = progress + '%';
+        });
+
+        // Enviar formulario
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            let score = 0;
+            const responses = {};
+
+            // Calcular puntuación
+            for (let i = 1; i <= 10; i++) {
+                const selectedOption = document.querySelector(`input[name="q${i}"]:checked`);
+                if (selectedOption) {
+                    responses[`q${i}`] = selectedOption.value;
+                    if (selectedOption.value === 'Si') {
+                        score += 2;
+                    } else if (selectedOption.value === 'A veces') {
+                        score += 1;
+                    }
+                }
+            }
+
+            // Mostrar resultado
+            scoreDisplay.textContent = score + ' / 20';
+
+            let message = '';
+            if (score >= 15) {
+                message = '<strong>Puntuación Alta (15-20):</strong> Tus respuestas sugieren un perfil muy compatible con los síntomas clave de Pulsatilla nigricans. Es recomendable consultar con un homeópata certificado para una evaluación profesional y un tratamiento personalizado.';
+            } else if (score >= 10) {
+                message = '<strong>Puntuación Moderada (10-14):</strong> Presentas varios síntomas asociados con Pulsatilla nigricans. Una consulta con un profesional en homeopatía podría ser beneficiosa para explorar esta opción terapéutica.';
+            } else if (score >= 5) {
+                message = '<strong>Puntuación Baja-Moderada (5-9):</strong> Algunos de tus síntomas podrían estar relacionados con Pulsatilla, pero es posible que otros remedios homeopáticos sean más apropiados. Un homeópata puede ayudarte a identificar el remedio más adecuado.';
+            } else {
+                message = '<strong>Puntuación Baja (0-4):</strong> Tus respuestas sugieren que Pulsatilla nigricans podría no ser el remedio más indicado para ti. Sin embargo, la homeopatía ofrece muchas otras opciones. Consulta con un profesional para explorar alternativas.';
+            }
+
+            resultText.innerHTML = message;
+            resultDiv.classList.add('show');
+            window.scrollTo({ top: resultDiv.offsetTop - 100, behavior: 'smooth' });
+
+            // Guardar datos (sin identificación personal)
+            console.log('Respuestas anónimas:', responses, 'Puntuación:', score);
+        });
+    </script>
+</body>
+</html>
